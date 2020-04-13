@@ -1,6 +1,11 @@
 <p>
     <a href="{% url 'index' %}">Learning Log</a> -
-    <a href="{% url 'topics' %}">Tematy</a>
+    <a href="{% url 'topics' %}">Tematy</a> - 
+    {% if user.is_authenticated %}
+      Witaj, {{ user.username}}.
+    {% else %}
+      <a href="{% url 'login' %}">Zaloguj</a>
+    {% endif %}
 
 </p>
 
