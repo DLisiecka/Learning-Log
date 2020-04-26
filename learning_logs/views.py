@@ -38,8 +38,11 @@ def new_topic(request):
         #Przekazano dane za pomocą żądania POST, należy je przetworzyć.
         form = TopicForm(request.POST)
         if form.is_valid():
-            form.save()
+            new_topic = form.save(commit=False)
+            new_topic.owner = request.user
+            new_topic.save()
             return HttpResponseRedirect(reverse('topics'))
+
     context = {'form': form}
     return render(request, 'learning_logs/new_topic.html', context)
 
@@ -55,6 +58,7 @@ def new_entry(request, topic_id):
         if form.is_valid():
             new_entry = form.save(commit=False)
             new_entry.topic = topic
+            new_entry.owner = request.user
             new_entry.save()
             return HttpResponseRedirect(reverse('topic', args=[topic_id]))
     context = {'topic': topic, 'form': form}
